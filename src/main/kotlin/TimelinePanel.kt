@@ -54,13 +54,14 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionLi
         }
     }
 
-    override fun mouseDragged(e: MouseEvent?) {}
-
-    override fun mouseMoved(e: MouseEvent) {
+    override fun mouseDragged(e: MouseEvent) {
         if (mode == Mode.DISPLAY_PLAYHEAD) {
             updateMouse(e)
             repaint()
         }
+    }
+
+    override fun mouseMoved(e: MouseEvent) {
     }
 
     private fun updateMouse(e: MouseEvent) {
