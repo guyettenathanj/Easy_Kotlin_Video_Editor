@@ -7,87 +7,94 @@ import java.awt.event.MouseListener
 import java.awt.event.MouseMotionListener
 import javax.swing.JLabel
 import javax.swing.JPanel
+import java.awt.BorderLayout
 
-class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionListener, MouseListener {
+
+class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
     private val timeInterval = 5 // seconds
     private val labelSpacing = 60 // pixels between labels
     private val timelineLength = 1000 // Adjust this for the length of your timeline
     private var currentMouseX = -1 // Initial mouse x-coordinate
     private var mode = Mode.DISPLAY_PLAYHEAD
 
+    private val playPauseButton = PlayPauseButton(Font("Arial", Font.BOLD, 16))
+
     init {
+        layout = BorderLayout()
         preferredSize = Dimension(timelineLength, 100)
-        addMouseMotionListener(this)
-        addMouseListener(this)
+        addControlPanel()
+        addTimelineDisplayPanel()
     }
 
-    override fun paintComponent(graphics: Graphics) {
-        super.paintComponent(graphics)
+    private fun addControlPanel() {
+        val controlPanel = JPanel().apply {
+            add(playPauseButton)
+        }
+        add(controlPanel, BorderLayout.NORTH)
+    }
 
-        // Set a larger font size for the numbers
-        val font = Font("Default", Font.BOLD, 16)
-        graphics.font = font
+    private fun addTimelineDisplayPanel() {
+        val timelineDisplayPanel = TimelineDisplayPanel()
+        add(timelineDisplayPanel, BorderLayout.CENTER)
+    }
 
-        val numberOfLabels = timelineLength / labelSpacing
-
-        for (i in 0..numberOfLabels) {
-            val xPosition = i * labelSpacing
-            val timeLabel = i * timeInterval
-
-            // Draw wider tick marks
-            graphics.drawLine(xPosition, 30, xPosition, 50)
-
-            // Draw time label centered above the tick mark
-            graphics.drawString("$timeLabel", xPosition - graphics.fontMetrics.stringWidth("$timeLabel") / 2, 25)
+    inner class TimelineDisplayPanel : JPanel(), MouseMotionListener, MouseListener {
+        init {
+            addMouseMotionListener(this)
+            addMouseListener(this)
+            preferredSize = Dimension(timelineLength, 85) // Adjust the height as needed
         }
 
-        // Making state more readable
-        val isMousePositionValid = currentMouseX != -1
-        val isInFollowMouseMode = mode == Mode.DISPLAY_PLAYHEAD
-
-        // Track objects need to be rendered here...
-
-        // Draw the vertical red line at the current mouse position in DISPLAY_PLAYHEAD mode
-        if (isMousePositionValid && isInFollowMouseMode) {
-            graphics.color = Color.RED
-            graphics.drawLine(currentMouseX, 0, currentMouseX, height)
-        }
-    }
-
-    override fun mouseDragged(e: MouseEvent) {
-        if (mode == Mode.DISPLAY_PLAYHEAD) {
-            updateMouse(e)
-            repaint()
-        }
-    }
-
-    override fun mouseMoved(e: MouseEvent) {
-    }
-
-    private fun updateMouse(e: MouseEvent) {
-        currentMouseX = e.x
-        val locationValue = (currentMouseX.toDouble() / labelSpacing * timeInterval).toInt()
-        locationLabel.text = "Location: $locationValue"
-    }
-
-    override fun mouseClicked(e: MouseEvent) {
-        updateMouse(e)
-        val isLeftClick = e?.button == MouseEvent.BUTTON1
-        if (isLeftClick) {
-            mode = if (mode == Mode.DISPLAY_PLAYHEAD) Mode.HIDE_PLAYHEAD else Mode.DISPLAY_PLAYHEAD
-            if (mode == Mode.DISPLAY_PLAYHEAD) {
-                // Update and repaint immediately when switching back to DISPLAY_PLAYHEAD mode
-                val locationValue = (currentMouseX.toDouble() / labelSpacing * timeInterval).toInt()
-                locationLabel.text = "Location: $locationValue"
-            } else {
-                locationLabel.text = "Location: N/A"
+        override fun paintComponent(graphics: Graphics) {
+            super.paintComponent(graphics)
+            val font = Font("Default", Font.BOLD, 16)
+            graphics.font = font
+            val numberOfLabels = timelineLength / labelSpacing
+            for (i in 0..numberOfLabels) {
+                val xPosition = i * labelSpacing
+                val timeLabel = i * timeInterval
+                graphics.drawLine(xPosition, 30, xPosition, 50)
+                graphics.drawString("$timeLabel", xPosition - graphics.fontMetrics.stringWidth("$timeLabel") / 2, 25)
             }
+
+            val isMousePositionValid = currentMouseX != -1
+            val isInFollowMouseMode = mode == Mode.DISPLAY_PLAYHEAD
+            if (isMousePositionValid && isInFollowMouseMode) {
+                graphics.color = Color.RED
+                graphics.drawLine(currentMouseX, 0, currentMouseX, height)
+            }
+        }
+
+        override fun mouseDragged(e: MouseEvent) {
+            if (mode == Mode.DISPLAY_PLAYHEAD) {
+                updateMousePosition(e)
+            }
+        }
+
+        override fun mouseMoved(e: MouseEvent) {
+        }
+
+        override fun mouseClicked(e: MouseEvent) {
+            if (e.button == MouseEvent.BUTTON1) {
+                toggleMode()
+                updateMousePosition(e)
+            }
+        }
+
+        override fun mousePressed(e: MouseEvent) {}
+        override fun mouseReleased(e: MouseEvent) {}
+        override fun mouseEntered(e: MouseEvent) {}
+        override fun mouseExited(e: MouseEvent) {}
+
+        private fun updateMousePosition(e: MouseEvent) {
+            currentMouseX = e.x
+            val locationValue = (currentMouseX.toDouble() / labelSpacing * timeInterval).toInt()
+            locationLabel.text = "Location: $locationValue"
             repaint()
         }
-    }
 
-    override fun mousePressed(e: MouseEvent?) {}
-    override fun mouseReleased(e: MouseEvent?) {}
-    override fun mouseEntered(e: MouseEvent?) {}
-    override fun mouseExited(e: MouseEvent?) {}
+        private fun toggleMode() {
+            mode = if (mode == Mode.DISPLAY_PLAYHEAD) Mode.HIDE_PLAYHEAD else Mode.DISPLAY_PLAYHEAD
+        }
+    }
 }
