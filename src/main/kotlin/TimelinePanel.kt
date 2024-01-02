@@ -17,7 +17,7 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
     private var currentMouseX = -1 // Initial mouse x-coordinate
     private var mode = Mode.DISPLAY_PLAYHEAD
 
-    private val playPauseButton = PlayPauseButton(Font("Arial", Font.BOLD, 16))
+    private val playPauseButton = PlayPauseButton(Font("Arial", Font.BOLD, 22))
 
     init {
         layout = BorderLayout()
@@ -42,7 +42,7 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
         init {
             addMouseMotionListener(this)
             addMouseListener(this)
-            preferredSize = Dimension(timelineLength, 85) // Adjust the height as needed
+            preferredSize = Dimension(timelineLength, 100) // Adjust the height as needed
         }
 
         override fun paintComponent(graphics: Graphics) {
