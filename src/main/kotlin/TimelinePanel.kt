@@ -45,6 +45,8 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionLi
         val isMousePositionValid = currentMouseX != -1
         val isInFollowMouseMode = mode == Mode.DISPLAY_PLAYHEAD
 
+        // Track objects need to be rendered here...
+
         // Draw the vertical red line at the current mouse position in DISPLAY_PLAYHEAD mode
         if (isMousePositionValid && isInFollowMouseMode) {
             graphics.color = Color.RED
@@ -56,14 +58,19 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionLi
 
     override fun mouseMoved(e: MouseEvent) {
         if (mode == Mode.DISPLAY_PLAYHEAD) {
-            currentMouseX = e.x
-            val locationValue = (currentMouseX.toDouble() / labelSpacing * timeInterval).toInt()
-            locationLabel.text = "Location: $locationValue"
+            updateMouse(e)
             repaint()
         }
     }
 
-    override fun mouseClicked(e: MouseEvent?) {
+    private fun updateMouse(e: MouseEvent) {
+        currentMouseX = e.x
+        val locationValue = (currentMouseX.toDouble() / labelSpacing * timeInterval).toInt()
+        locationLabel.text = "Location: $locationValue"
+    }
+
+    override fun mouseClicked(e: MouseEvent) {
+        updateMouse(e)
         val isLeftClick = e?.button == MouseEvent.BUTTON1
         if (isLeftClick) {
             mode = if (mode == Mode.DISPLAY_PLAYHEAD) Mode.HIDE_PLAYHEAD else Mode.DISPLAY_PLAYHEAD
