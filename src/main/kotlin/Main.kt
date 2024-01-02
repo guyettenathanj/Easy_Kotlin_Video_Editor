@@ -4,8 +4,6 @@ import javax.swing.JLabel
 import javax.swing.JScrollPane
 import javax.swing.SwingUtilities
 
-// Sample...
-
 enum class Mode {
     DISPLAY_PLAYHEAD,
     HIDE_PLAYHEAD
@@ -32,4 +30,3 @@ fun createAndShowGUI() {
 
     frame.isVisible = true
 }
-

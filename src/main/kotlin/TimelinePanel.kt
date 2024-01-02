@@ -21,12 +21,12 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionLi
         addMouseListener(this)
     }
 
-    override fun paintComponent(g: Graphics) {
-        super.paintComponent(g)
+    override fun paintComponent(graphics: Graphics) {
+        super.paintComponent(graphics)
 
         // Set a larger font size for the numbers
         val font = Font("Default", Font.BOLD, 16)
-        g.font = font
+        graphics.font = font
 
         val numberOfLabels = timelineLength / labelSpacing
 
@@ -35,10 +35,10 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionLi
             val timeLabel = i * timeInterval
 
             // Draw wider tick marks
-            g.drawLine(xPosition, 30, xPosition, 50)
+            graphics.drawLine(xPosition, 30, xPosition, 50)
 
             // Draw time label centered above the tick mark
-            g.drawString("$timeLabel", xPosition - g.fontMetrics.stringWidth("$timeLabel") / 2, 25)
+            graphics.drawString("$timeLabel", xPosition - graphics.fontMetrics.stringWidth("$timeLabel") / 2, 25)
         }
 
         // Making state more readable
@@ -47,8 +47,8 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel(), MouseMotionLi
 
         // Draw the vertical red line at the current mouse position in DISPLAY_PLAYHEAD mode
         if (isMousePositionValid && isInFollowMouseMode) {
-            g.color = Color.RED
-            g.drawLine(currentMouseX, 0, currentMouseX, height)
+            graphics.color = Color.RED
+            graphics.drawLine(currentMouseX, 0, currentMouseX, height)
         }
     }
 
