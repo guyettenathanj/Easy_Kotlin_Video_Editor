@@ -12,6 +12,8 @@ import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.SwingUtilities
 
+// Sample...
+
 enum class Mode {
     DISPLAY_PLAYHEAD,
     HIDE_PLAYHEAD
