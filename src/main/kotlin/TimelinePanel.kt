@@ -17,20 +17,10 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
     private var currentMouseX = -1 // Initial mouse x-coordinate
     private var mode = Mode.DISPLAY_PLAYHEAD
 
-    private val playPauseButton = PlayPauseButton(Font("Arial", Font.BOLD, 22))
-
     init {
         layout = BorderLayout()
         preferredSize = Dimension(timelineLength, 100)
-        addControlPanel()
         addTimelineDisplayPanel()
-    }
-
-    private fun addControlPanel() {
-        val controlPanel = JPanel().apply {
-            add(playPauseButton)
-        }
-        add(controlPanel, BorderLayout.NORTH)
     }
 
     private fun addTimelineDisplayPanel() {
