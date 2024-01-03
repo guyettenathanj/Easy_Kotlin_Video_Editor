@@ -5,6 +5,8 @@ import javax.swing.*
 
 
 fun main() {
+    // Swing components are processed one at a time
+    // in special one off thread.
     SwingUtilities.invokeLater { createAndShowGUI() }
 }
 
