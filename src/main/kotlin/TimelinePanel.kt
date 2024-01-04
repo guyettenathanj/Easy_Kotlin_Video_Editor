@@ -50,8 +50,7 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
             val isMousePositionValid = currentMouseX != -1
             val isInFollowMouseMode = mode == Mode.DISPLAY_PLAYHEAD
             if (isMousePositionValid && isInFollowMouseMode) {
-                graphics.color = Color.RED
-                graphics.drawLine(currentMouseX, 0, currentMouseX, height)
+                paintPlayheadLine(graphics, currentMouseX, height )
             }
         }
 
@@ -86,5 +85,10 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
         private fun toggleMode() {
             mode = if (mode == Mode.DISPLAY_PLAYHEAD) Mode.HIDE_PLAYHEAD else Mode.DISPLAY_PLAYHEAD
         }
+    }
+
+    private fun paintPlayheadLine(graphics: Graphics, xCoord: Int, height: Int) {
+        graphics.color = Color.RED
+        graphics.drawLine(xCoord, 0, xCoord, height)
     }
 }
