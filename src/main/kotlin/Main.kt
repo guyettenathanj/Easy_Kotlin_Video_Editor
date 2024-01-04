@@ -2,6 +2,8 @@ import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.Font
 import javax.swing.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.actor
 
 
 fun main() {
@@ -24,9 +26,9 @@ fun createAndShowGUI() {
             verticalScrollBarPolicy = JScrollPane.VERTICAL_SCROLLBAR_NEVER
         }
         val horizontalGap = 20
-        val verticleGap = 10
+        val verticalGap = 10
         val topPanel =
-            JPanel(FlowLayout(FlowLayout.LEFT, horizontalGap, verticleGap))
+            JPanel(FlowLayout(FlowLayout.LEFT, horizontalGap, verticalGap))
                 .apply {
             add(locationLabel)
             add(playPauseButton)
