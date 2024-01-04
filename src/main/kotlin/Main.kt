@@ -1,7 +1,8 @@
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import videoEditorActorSystem.actors.VideoEditorMsg
+import videoEditorActorSystem.actors.videoEditorActor
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.Font
@@ -14,17 +15,14 @@ fun main() {
 }
 
 fun createAndShowGUI() {
-    // Coroutine scope for the actor
     val scope = CoroutineScope(Dispatchers.Default)
-
-    // Create the videoEditorActor
     val videoEditorActor = scope.videoEditorActor()
 
     val frame = JFrame("Easy Kotlin Video Editor").apply {
         // Set general JFrame Configuration
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 
-        // Create components to add to JFrame
+        // Create components to add to JFrame, and wire them into the actor system.
         val locationLabel = JLabel("Location: 0")
         val playPauseButton =
             PlayPauseButton(Font("Arial", Font.BOLD, 23 ))
@@ -48,7 +46,9 @@ fun createAndShowGUI() {
 
         val horizontalGap = 20
         val verticalGap = 10
-        val topPanel = JPanel(FlowLayout(FlowLayout.LEFT, horizontalGap, verticalGap)).apply {
+        val topPanel =
+            JPanel(FlowLayout(FlowLayout.LEFT, horizontalGap, verticalGap)).
+            apply {
             add(locationLabel)
             add(playPauseButton)
         }
@@ -62,4 +62,3 @@ fun createAndShowGUI() {
 
     frame.isVisible = true
 }
-

@@ -1,7 +1,10 @@
-import javax.swing.JButton
+
 import java.awt.Font
 import java.awt.event.ActionListener
+import javax.swing.JButton
 
+// The state should be stored in an actor, not a button
+// It should be triggering a
 enum class PlayPauseState {
     PLAY,
     PAUSE
