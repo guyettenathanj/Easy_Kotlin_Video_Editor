@@ -19,6 +19,7 @@ fun CoroutineScope.videoEditorActor() = actor<VideoEditorMsg> {
             is VideoEditorMsg.TogglePlayPause -> {
                 state.isPlaying = !state.isPlaying
                 // Update the UI or perform other actions based on the new state
+                println("isPlaying state is now ${state.isPlaying}")
             }
             // Handle other messages
         }
