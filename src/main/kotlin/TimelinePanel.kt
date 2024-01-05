@@ -15,7 +15,7 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
     private val labelSpacing = 60 // pixels between labels
     private val timelineLength = 1000 // Adjust this for the length of your timeline
     private var currentMouseX = -1 // Initial mouse x-coordinate
-    private var mode = Mode.DISPLAY_PLAYHEAD
+    private var playheadVisibility = PlayheadVisibility.DISPLAY_PLAYHEAD
 
     init {
         layout = BorderLayout()
@@ -48,14 +48,14 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
             }
 
             val isMousePositionValid = currentMouseX != -1
-            val isInFollowMouseMode = mode == Mode.DISPLAY_PLAYHEAD
-            if (isMousePositionValid && isInFollowMouseMode) {
+            val isInFollowMousePlayheadVisibility = playheadVisibility == PlayheadVisibility.DISPLAY_PLAYHEAD
+            if (isMousePositionValid && isInFollowMousePlayheadVisibility) {
                 paintPlayheadLine(graphics, currentMouseX, height )
             }
         }
 
         override fun mouseDragged(e: MouseEvent) {
-            if (mode == Mode.DISPLAY_PLAYHEAD) {
+            if (playheadVisibility == PlayheadVisibility.DISPLAY_PLAYHEAD) {
                 updateMousePosition(e)
             }
         }
@@ -83,7 +83,7 @@ class TimelinePanel(private val locationLabel: JLabel) : JPanel() {
         }
 
         private fun toggleMode() {
-            mode = if (mode == Mode.DISPLAY_PLAYHEAD) Mode.HIDE_PLAYHEAD else Mode.DISPLAY_PLAYHEAD
+            playheadVisibility = if (playheadVisibility == PlayheadVisibility.DISPLAY_PLAYHEAD) PlayheadVisibility.HIDE_PLAYHEAD else PlayheadVisibility.DISPLAY_PLAYHEAD
         }
     }
 

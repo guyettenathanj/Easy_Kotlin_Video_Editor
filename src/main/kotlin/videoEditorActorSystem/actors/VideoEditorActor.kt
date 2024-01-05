@@ -4,7 +4,6 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.actor
 
-// Define messages for your actors
 sealed class VideoEditorMsg {
     object TogglePlayPause : VideoEditorMsg()
     data class SetPlayheadPosition(val xCoordinate: Int) : VideoEditorMsg()
@@ -12,7 +11,6 @@ sealed class VideoEditorMsg {
     // Add other message types as needed
 }
 
-// State of the video editor
 data class VideoEditorState(var isPlaying: Boolean = false)
 
 // Actor for managing the state
