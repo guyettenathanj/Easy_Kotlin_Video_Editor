@@ -1,3 +1,4 @@
+import eventSourcing.EventStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,9 @@ fun main() {
 
 fun createAndShowGUI() {
     val scope = CoroutineScope(Dispatchers.Default)
-    val videoEditorActor = scope.videoEditorActor()
+    val eventStore = EventStore()
+    val videoEditorActor =
+        scope.videoEditorActor(eventStore)
 
     val frame = JFrame("Easy Kotlin Video Editor").apply {
         // Set general JFrame Configuration
